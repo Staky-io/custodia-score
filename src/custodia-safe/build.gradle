@@ -1,0 +1,55 @@
+
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'foundation.icon:gradle-javaee-plugin:0.7.9'
+    }
+}
+
+dependencies {
+    compileOnly 'foundation.icon:javaee-api:0.9.4'
+    implementation 'foundation.icon:javaee-scorex:0.5.4.1'
+    implementation 'com.github.sink772:minimal-json:0.9.7'
+
+    testImplementation 'foundation.icon:javaee-unittest:0.12.0'
+    testImplementation 'org.mockito:mockito-core:4.11.0'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.9.3'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.9.3'
+}
+
+deployJar {
+    endpoints {
+        berlin {
+            uri = 'https://berlin.net.solidwallet.io/api/v3'
+            nid = 0x7
+        }
+        sejong {
+            uri = 'https://sejong.net.solidwallet.io/api/v3'
+            nid = 0x53
+        }
+        mainnet {
+            uri = 'https://ctz.solidwallet.io/api/v3'
+            nid = 0x1
+        }
+        lisbon {
+            uri = 'https://lisbon.net.solidwallet.io/api/v3'
+            nid = 0x2
+        }
+    }
+    keystore = rootProject.hasProperty('keystoreName') ? "$keystoreName" : '../res/keystore_gochain'
+    password = rootProject.hasProperty('keystorePass') ? "$keystorePass" : 'gochain'
+    
+    parameters {
+        
+    }
+}
+
+optimizedJar {
+    mainClassName = 'com.custodia.score.MultiSigWallet'
+    from {
+        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+}
+

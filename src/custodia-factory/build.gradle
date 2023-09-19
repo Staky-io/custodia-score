@@ -1,0 +1,49 @@
+
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'foundation.icon:gradle-javaee-plugin:0.7.9'
+    }
+}
+
+dependencies {
+    compileOnly 'foundation.icon:javaee-api:0.9.4'
+    implementation 'com.github.sink772:javaee-tokens:0.6.4'
+    implementation 'foundation.icon:javaee-scorex:0.5.3'
+}
+optimizedJar {
+    mainClassName = 'com.custodia.score.CustodiaFactory'
+    from {
+        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+}
+
+deployJar {
+    endpoints {
+        berlin {
+            uri = 'https://berlin.net.solidwallet.io/api/v3'
+            nid = 0x7
+        }
+        sejong {
+            uri = 'https://sejong.net.solidwallet.io/api/v3'
+            nid = 0x53
+        }
+        mainnet {
+            uri = 'https://ctz.solidwallet.io/api/v3'
+            nid = 0x1
+        }
+        lisbon {
+            uri = 'https://lisbon.net.solidwallet.io/api/v3'
+            nid = 0x2
+        }
+    }
+    keystore = rootProject.hasProperty('keystoreName') ? "$keystoreName" : '../res/keystore_gochain'
+    password = rootProject.hasProperty('keystorePass') ? "$keystorePass" : 'gochain'
+    
+    parameters {
+        
+    }
+}
+

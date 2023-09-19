@@ -1,0 +1,15 @@
+{
+    "name": "custodia-scores",
+    "networks": {
+        "local": {
+            "uri": "http://localhost:9082/api/v3",
+            "network_id": 3
+        },
+        "lisbon": {
+            "uri": "https://lisbon.net.solidwallet.io/api/v3",
+            "network_id": 2
+        }
+    },
+    "deployJar": true,
+    "keystore": ".keystore.json"
+}
